@@ -1,10 +1,37 @@
-Mục tiêu
-Khởi tạo cặp khóa SSH bảo mật phục vụ mục đích xác thực kết nối từ xa.
-Cấu hình liên kết an toàn giữa repository cục bộ với máy chủ GitHub.
-Đẩy (push) mã nguồn và lịch sử commit thành công lên GitHub bằng giao thức SSH.
-Yêu cầu
-Bối cảnh: Học viên cần đưa dự án cục bộ lên kho lưu trữ đám mây GitHub để lưu trữ và cộng tác nhóm.
-Ràng buộc: Bắt buộc sử dụng giao thức SSH và thuật toán Ed25519 để sinh khóa (không sử dụng giao thức HTTPS để tránh phải nhập password/token thủ công).
-Kiểm tra
-Lệnh kiểm tra:
-Kiểm tra kết nối SSH tới GitHub:
+# Báo cáo Bài 3: Cấu hình xác thực SSH và Đẩy dự án lên GitHub
+
+## 1. Mục tiêu
+Tạo khóa SSH Ed25519, liên kết repository cục bộ với GitHub qua giao thức SSH, và đẩy mã nguồn lên thành công.
+
+## 2. Quá trình tạo khóa SSH Ed25519
+- Sinh cặp khóa bằng thuật toán Ed25519:
+  ssh-keygen -t ed25519 -C "tkhuyen1303@gmail.com"
+- Khóa được lưu tại: ~/.ssh/id_ed25519 (private) và ~/.ssh/id_ed25519.pub (public).
+- Copy nội dung khóa công khai:
+  cat ~/.ssh/id_ed25519.pub
+- Thêm khóa công khai vào GitHub tại: Settings > SSH and GPG keys > New SSH key.
+
+## 3. Liên kết remote repository (giao thức SSH)
+- Nối remote origin bằng URL dạng SSH:
+  git remote add origin git@github.com:tranhuyen133/Devops_ss4_ex3.git
+- Đẩy mã nguồn lên GitHub:
+  git push -u origin main
+
+## 4. Kiểm tra kết quả
+
+Kiểm tra kết nối SSH:
+ssh -T git@github.com
+Kết quả:
+Hi tranhuyen133! You've successfully authenticated, but GitHub does not provide shell access.
+
+Kiểm tra remote URL:
+git remote -v
+Kết quả:
+origin  git@github.com:tranhuyen133/Devops_ss4_ex3.git (fetch)
+origin  git@github.com:tranhuyen133/Devops_ss4_ex3.git (push)
+
+## 5. Đường dẫn repository GitHub
+https://github.com/tranhuyen133/Devops_ss4_ex3
+
+## Lưu ý bảo mật
+Chỉ chia sẻ khóa công khai (id_ed25519.pub). Tuyệt đối không nộp/chia sẻ khóa private (id_ed25519).
